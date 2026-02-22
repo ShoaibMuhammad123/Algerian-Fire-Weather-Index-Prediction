@@ -48,3 +48,11 @@ Here is how I designed the application to work:
 `Dynamic Scaling:` I load my pre-trained StandardScaler (scaler_reg.pkl) to instantly normalize the user's raw input, ensuring it matches the exact distribution of my original training data.
 
 `Real-Time Prediction:` The scaled data is passed to my saved Ridge Regression model (ridge_reg_model.pkl), which calculates the predicted FWI and immediately displays the result back to the user on the interface.
+
+### Cloud Deployment (AWS Elastic Beanstalk)
+To take this project beyond a local environment, I configured it for cloud deployment using AWS Elastic Beanstalk.
+
+I included an `.ebextensions` directory to handle the specific environment configurations required by AWS. By explicitly setting the WSGIPath to my main application file, I ensured that the AWS servers can seamlessly locate, launch, and host my Flask backend, making the predictive model accessible on the web.
+#### How it Works
+Whenever a change is pushed to the main branch,  `CodePipeline` triggers the deployment process. It securely authenticates with AWS, packages the Flask application, and sends it to the Elastic Beanstalk environment. The AWS Linux machine then reads the .ebextensions configuration, installs the necessary Python dependencies, and serves the updated application to users.
+
