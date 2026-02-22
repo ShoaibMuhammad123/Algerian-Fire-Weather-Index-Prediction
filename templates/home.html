@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Algerian Fire Weather Index Prediction</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #88727d; /* full page background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            color: #0a0a0a;
+        }
+
+        .form-wrapper {
+            margin-top: 40px;
+            width: 100%;
+            max-width: 600px; /* keeps form centered */
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #090a0a;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-right: 10px;
+            flex: 1; /* labels take fixed space */
+        }
+
+        input[type="number"] {
+            padding: 8px 10px;
+            border: 1.5px solid #0d0c0c;
+            border-radius: 5px;
+            font-size: 1rem;
+            flex: 1; /* input takes remaining space */
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px #3498db;
+        }
+
+        input[type="submit"] {
+            margin-top: 15px;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            background-color: #aa0ac3;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f6f1f1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .form-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            label {
+                margin-bottom: 5px;
+            }
+            input[type="number"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-wrapper">
+        <h1>Algerian Fire Weather Index Prediction</h1>
+
+        <form action="{{ url_for('predict_data') }}" method="post">
+            <div class="form-row">
+                <label for="temperature" title="Temperature in degrees Celsius">Temperature (°C):</label>
+                <input type="number" id="temperature" name="Temperature" step="1" required>
+            </div>
+
+            <div class="form-row">
+                <label for="rh" title="Relative Humidity as a percentage">Relative Humidity (%):</label>
+                <input type="number" id="rh" name="RH" step="1" required>
+            </div>
+
+            <div class="form-row">
+                <label for="ws" title="Wind Speed in kilometers per hour">Wind Speed (km/h):</label>
+                <input type="number" id="ws" name="Ws" step="1" required>
+            </div>
+
+            <div class="form-row">
+                <label for="rain" title="Rainfall in millimeters">Rainfall (mm):</label>
+                <input type="number" id="rain" name="Rain" step="0.01" required>
+            </div>
+
+            <div class="form-row">
+                <label for="ffmc" title="Fine Fuel Moisture Code (indicator of fuel moisture)">Fine Fuel Moisture Code (FFMC):</label>
+                <input type="number" id="ffmc" name="FFMC" step="0.01" required>
+            </div>
+
+            <div class="form-row">
+                <label for="dmc" title="Duff Moisture Code (indicator of moisture content in the duff layer)">Duff Moisture Code (DMC):</label>
+                <input type="number" id="dmc" name="DMC" step="0.01" required>
+            </div>
+
+            <div class="form-row">
+                <label for="isi" title="Initial Spread Index (rate of fire spread)">Initial Spread Index (ISI):</label>
+                <input type="number" id="isi" name="ISI" step="0.01" required>
+            </div>
+
+            <div class="form-row">
+                <label for="classes" title="Fire Class: 0 = No Fire, 1 = Fire">Fire Class (0 = No Fire, 1 = Fire):</label>
+                <input type="number" id="classes" name="Classes" min="0" max="1" step="1" required>
+            </div>
+
+            <input type="submit" value="Submit">
+        </form>
+
+        {% if results %}
+            <div class="result">
+                The FWI predicted value is <strong>{{ results }}</strong>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
